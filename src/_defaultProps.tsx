@@ -8,13 +8,13 @@ export default {
       {
         path: '/welcome',
         name: 'HOME',
-        icon: '',//(new SmileFilled({})).render(),
-        component: './Welcome',
+        icon: <SmileFilled />,
+        component: <div>ok</div>,
       },
       {
         path: '/admin',
         name: 'ADMIN',
-        icon: '',//<CrownFilled />,
+        icon: <CrownFilled />,
         access: 'canAdmin',
         component: './Admin',
         routes: [
@@ -27,44 +27,44 @@ export default {
           {
             path: '/admin/sub-page2',
             name: '二级页面',
-            icon: '',//<CrownFilled />,
+            icon: <CrownFilled />,
             component: './Welcome',
           },
           {
             path: '/admin/sub-page3',
             name: '三级页面',
-            icon: '',//<CrownFilled />,
+            icon: <CrownFilled />,
             component: './Welcome',
           },
         ],
       },
       {
         name: '列表页',
-        icon: '',//<TabletFilled />,
+        icon: <TabletFilled />,
         path: '/list',
         component: './ListTableList',
         routes: [
           {
             path: '/list/sub-page',
             name: '列表页面',
-            icon: '',//<CrownFilled />,
+            icon: <CrownFilled />,
             routes: [
               {
                 path: 'sub-sub-page1',
                 name: '一一级列表页面',
-                icon: '',//<CrownFilled />,
+                icon: <CrownFilled />,
                 component: './Welcome',
               },
               {
                 path: 'sub-sub-page2',
                 name: '一二级列表页面',
-                icon: '',//<CrownFilled />,
+                icon: <CrownFilled />,
                 component: './Welcome',
               },
               {
                 path: 'sub-sub-page3',
                 name: '一三级列表页面',
-                icon: '',//<CrownFilled />,
+                icon: <CrownFilled />,
                 component: './Welcome',
               },
             ],
@@ -72,13 +72,13 @@ export default {
           {
             path: '/list/sub-page2',
             name: '二级列表页面',
-            icon: '',//<CrownFilled />,
+            icon: <CrownFilled />,
             component: './Welcome',
           },
           {
             path: '/list/sub-page3',
             name: '三级列表页面',
-            icon: '',//<CrownFilled />,
+            icon: <CrownFilled />,
             component: './Welcome',
           },
         ],
