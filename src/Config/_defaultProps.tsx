@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
 import {
 	ChromeFilled,
 	CrownFilled,
 	SmileFilled,
 	TabletFilled,
 } from '@ant-design/icons';
-import { Navigate } from 'react-router-dom';
+import Planning from '../Routes/Pages/Planning/planning';
+import planning from '../Routes/Pages/Planning/planning';
 
 export default {
-  title: 'CHABE - WPEx',
-  logo: 'https://gw.alipayobjects.com/zos/antfincdn/PmY%24TNNDBI/logo.svg',
-  pwa: true,
+	title: 'CHABE - WPEx',
+	logo: 'https://gw.alipayobjects.com/zos/antfincdn/PmY%24TNNDBI/logo.svg',
+	pwa: true,
 	route: {
 		path: '/',
 		routes: [
@@ -20,6 +20,12 @@ export default {
 				name: 'HOME',
 				icon: <SmileFilled />,
 				component: './Welcome',
+			},
+			{
+				path: '/planning',
+				name: 'Planning',
+				icon: <SmileFilled />,
+				component: <Planning />,
 			},
 			{
 				path: '/data',
@@ -33,14 +39,20 @@ export default {
 						name: 'Missions',
 						icon: 'https://gw.alipayobjects.com/zos/antfincdn/upvrAjAPQX/Logo_Tech%252520UI.svg',
 						component: './Welcome',
-            routes: [
-              {
-                path: '/data/missions/planning',
-                name: 'Planning',
-                icon: <CrownFilled />,
-                component: './Welcome',
-              }
-            ]
+						routes: [
+							{
+								path: '/data/missions/planning',
+								name: 'Planning',
+								icon: <CrownFilled />,
+								component: './Welcome',
+							},
+							{
+								path: '/data/missions/x',
+								name: 'X',
+								icon: <CrownFilled />,
+								component: './Welcome',
+							}
+						]
 					},
 					{
 						path: '/data/folders',

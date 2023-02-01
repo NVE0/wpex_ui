@@ -135,7 +135,7 @@ const MenuCard = () => {
 									color: ${token.colorText};
 									line-height: 22px;
 								`}>
-								热门产品
+								DOCUMENTS
 							</div>
 							{new Array(3).fill(1).map((name, index) => {
 								return (
@@ -195,7 +195,7 @@ const MenuCard = () => {
 							background-color: ${token.colorBgTextHover};
 						}
 					`}>
-					<span> Enterprise Asset Center</span>
+					<span> Centre d'apprentissage</span>
 					<CaretDownFilled />
 				</div>
 			</Popover>
