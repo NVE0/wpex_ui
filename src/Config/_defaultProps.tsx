@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChromeFilled, CrownFilled, SmileFilled, TabletFilled } from '@ant-design/icons';
+import { Navigate } from 'react-router-dom';
 
 export default {
   route: {
@@ -9,12 +10,12 @@ export default {
         path: '/welcome',
         name: 'HOME',
         icon: <SmileFilled />,
-        component: <div>ok</div>,
+        component: './Welcome',
       },
       {
         path: '/admin',
         name: 'ADMIN',
-        icon: <CrownFilled />,
+        icon: <ChromeFilled />,
         access: 'canAdmin',
         component: './Admin',
         routes: [

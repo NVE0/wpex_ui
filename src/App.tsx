@@ -18,27 +18,17 @@ import {
 import { css } from '@emotion/css';
 import { Button, Divider, Input, Popover, theme } from 'antd';
 import React, { useState } from 'react';
-import defaultProps from './_defaultProps';
+import defaultProps from './Config/_defaultProps';
 
 import {
 	createBrowserRouter,
 	RouterProvider,
-	useLocation,
-  } from "react-router-dom";
+} from "react-router-dom";
 
 
-  import Welcome from './Welcome';
+import _routes from './Routes/_routes';
+const router = createBrowserRouter(_routes);
 
-  const router = createBrowserRouter([
-	{
-	  path: "/welcome",
-	  element: <div>Hello world!</div>,
-	},
-	{
-		path: "/admin",
-		element: <div>Hello world hehehehe!</div>,
-	  },
-  ]);
 
 const Item: React.FC<{ children: React.ReactNode }> = (props) => {
 	const { token } = theme.useToken();
@@ -277,12 +267,16 @@ export default () => {
 	});
 
 	const [pathname, setPathnamex] = useState(router.state.location.pathname);
+
 	const setPathname = (path: string) => {
-		
 		setPathnamex(path);
 		router.navigate(path);
-		
 	};
+	
+	router.subscribe((location) => {
+		// Fix for when the user is redirected
+		setPathnamex(location.location.pathname);
+	});
 
 	const [num, setNum] = useState(40);
 	return (
@@ -415,9 +409,9 @@ export default () => {
 								minHeight: 500,
 							}}
 						>
-							<Welcome />
+							<RouterProvider router={router} />
 							<div />
-							
+
 						</ProCard>
 					</PageContainer>
 
