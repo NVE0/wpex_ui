@@ -20,17 +20,12 @@ import { Button, Divider, Input, Popover, theme } from 'antd';
 import React, { useState } from 'react';
 import defaultProps from './Config/_defaultProps';
 
-import {
-	createBrowserRouter,
-	RouterProvider,
-} from "react-router-dom";
-
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import _routes from './Routes/_routes';
 const router = createBrowserRouter(_routes);
 
-
-const Item: React.FC<{ children: React.ReactNode }> = (props) => {
+const Item: React.FC<{ children: React.ReactNode }> = props => {
 	const { token } = theme.useToken();
 	return (
 		<div
@@ -46,8 +41,7 @@ const Item: React.FC<{ children: React.ReactNode }> = (props) => {
 			`}
 			style={{
 				width: '33.33%',
-			}}
-		>
+			}}>
 			{props.children}
 			<DoubleRightOutlined
 				style={{
@@ -58,7 +52,10 @@ const Item: React.FC<{ children: React.ReactNode }> = (props) => {
 	);
 };
 
-const List: React.FC<{ title: string; style?: React.CSSProperties }> = (props) => {
+const List: React.FC<{
+	title: string;
+	style?: React.CSSProperties;
+}> = props => {
 	const { token } = theme.useToken();
 
 	return (
@@ -66,8 +63,7 @@ const List: React.FC<{ title: string; style?: React.CSSProperties }> = (props) =
 			style={{
 				width: '100%',
 				...props.style,
-			}}
-		>
+			}}>
 			<div
 				style={{
 					fontSize: 16,
@@ -75,16 +71,14 @@ const List: React.FC<{ title: string; style?: React.CSSProperties }> = (props) =
 					lineHeight: '24px',
 					fontWeight: 500,
 					marginBlockEnd: 16,
-				}}
-			>
+				}}>
 				{props.title}
 			</div>
 			<div
 				style={{
 					display: 'flex',
 					flexWrap: 'wrap',
-				}}
-			>
+				}}>
 				{new Array(6).fill(1).map((_, index) => {
 					return <Item key={index}>具体的解决方案-{index}</Item>;
 				})}
@@ -100,8 +94,7 @@ const MenuCard = () => {
 			style={{
 				display: 'flex',
 				alignItems: 'center',
-			}}
-		>
+			}}>
 			<Divider
 				style={{
 					height: '1.5em',
@@ -132,17 +125,16 @@ const MenuCard = () => {
 						<div
 							style={{
 								width: '308px',
-								borderInlineStart: '1px solid ' + token.colorBorder,
+								borderInlineStart:
+									'1px solid ' + token.colorBorder,
 								paddingInlineStart: 16,
-							}}
-						>
+							}}>
 							<div
 								className={css`
 									font-size: 14px;
 									color: ${token.colorText};
 									line-height: 22px;
-								`}
-							>
+								`}>
 								热门产品
 							</div>
 							{new Array(3).fill(1).map((name, index) => {
@@ -158,21 +150,18 @@ const MenuCard = () => {
 											&:hover {
 												background-color: ${token.colorBgTextHover};
 											}
-										`}
-									>
+										`}>
 										<img src="https://gw.alipayobjects.com/zos/antfincdn/6FTGmLLmN/bianzu%25252013.svg" />
 										<div
 											style={{
 												marginInlineStart: 14,
-											}}
-										>
+											}}>
 											<div
 												className={css`
 													font-size: 14px;
 													color: ${token.colorText};
 													line-height: 22px;
-												`}
-											>
+												`}>
 												Ant Design
 											</div>
 											<div
@@ -180,8 +169,7 @@ const MenuCard = () => {
 													font-size: 12px;
 													color: ${token.colorTextSecondary};
 													line-height: 20px;
-												`}
-											>
+												`}>
 												杭州市较知名的 UI 设计语言
 											</div>
 										</div>
@@ -190,8 +178,7 @@ const MenuCard = () => {
 							})}
 						</div>
 					</div>
-				}
-			>
+				}>
 				<div
 					style={{
 						color: token.colorTextHeading,
@@ -207,8 +194,7 @@ const MenuCard = () => {
 						&:hover {
 							background-color: ${token.colorBgTextHover};
 						}
-					`}
-				>
+					`}>
 					<span> 企业级资产中心</span>
 					<CaretDownFilled />
 				</div>
@@ -228,11 +214,10 @@ const SearchInput = () => {
 				alignItems: 'center',
 				marginInlineEnd: 24,
 			}}
-			onMouseDown={(e) => {
+			onMouseDown={e => {
 				e.stopPropagation();
 				e.preventDefault();
-			}}
-		>
+			}}>
 			<Input
 				style={{
 					borderRadius: 4,
@@ -272,8 +257,8 @@ export default () => {
 		setPathnamex(path);
 		router.navigate(path);
 	};
-	
-	router.subscribe((location) => {
+
+	router.subscribe(location => {
 		// Fix for when the user is redirected
 		setPathnamex(location.location.pathname);
 	});
@@ -284,8 +269,7 @@ export default () => {
 			id="test-pro-layout"
 			style={{
 				height: '100vh',
-			}}
-		>
+			}}>
 			<ProConfigProvider hashed={false}>
 				<ProLayout
 					prefixCls="my-prefix"
@@ -322,10 +306,11 @@ export default () => {
 						size: 'small',
 						title: '七妮妮',
 					}}
-					actionsRender={(props) => {
+					actionsRender={props => {
 						if (props.isMobile) return [];
 						return [
-							props.layout !== 'side' && document.body.clientWidth > 1400 ? (
+							props.layout !== 'side' &&
+							document.body.clientWidth > 1400 ? (
 								<SearchInput />
 							) : undefined,
 							<InfoCircleFilled key="InfoCircleFilled" />,
@@ -351,32 +336,29 @@ export default () => {
 							</>
 						);
 					}}
-					menuFooterRender={(props) => {
+					menuFooterRender={props => {
 						if (props?.collapsed) return undefined;
 						return (
 							<div
 								style={{
 									textAlign: 'center',
 									paddingBlockStart: 12,
-								}}
-							>
+								}}>
 								<div>© 2021 Made with love</div>
 								<div>by Ant Design</div>
 							</div>
 						);
 					}}
-					onMenuHeaderClick={(e) => console.log(e)}
+					onMenuHeaderClick={e => console.log(e)}
 					menuItemRender={(item, dom) => (
 						<div
 							onClick={() => {
 								setPathname(item.path || '/welcome');
-							}}
-						>
+							}}>
 							{dom}
 						</div>
 					)}
-					{...settings}
-				>
+					{...settings}>
 					<PageContainer
 						token={{
 							paddingInlinePageContainerContent: num,
@@ -389,8 +371,7 @@ export default () => {
 								type="primary"
 								onClick={() => {
 									setNum(num > 0 ? 0 : 40);
-								}}
-							>
+								}}>
 								主操作
 							</Button>,
 						]}
@@ -400,27 +381,26 @@ export default () => {
 							<Button key="2" type="primary">
 								提交
 							</Button>,
-						]}
-					>
+						]}>
 						<ProCard
 							loading={false}
 							style={{
 								//height: '200vh',
 								minHeight: 500,
-							}}
-						>
+							}}>
 							<RouterProvider router={router} />
 							<div />
-
 						</ProCard>
 					</PageContainer>
 
 					<SettingDrawer
 						pathname={pathname}
 						enableDarkTheme
-						getContainer={() => document.getElementById('test-pro-layout')}
+						getContainer={() =>
+							document.getElementById('test-pro-layout')
+						}
 						settings={settings}
-						onSettingChange={(changeSetting) => {
+						onSettingChange={changeSetting => {
 							setSetting(changeSetting);
 						}}
 						disableUrlParams={false}
