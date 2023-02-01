@@ -195,7 +195,7 @@ const MenuCard = () => {
 							background-color: ${token.colorBgTextHover};
 						}
 					`}>
-					<span> 企业级资产中心</span>
+					<span> Enterprise Asset Center</span>
 					<CaretDownFilled />
 				</div>
 			</Popover>
@@ -376,6 +376,7 @@ export default () => {
 							</Button>,
 						]}
 						subTitle="简单的描述"
+
 						footer={[
 							<Button key="3">重置</Button>,
 							<Button key="2" type="primary">
@@ -385,7 +386,7 @@ export default () => {
 						<ProCard
 							loading={false}
 							style={{
-								//height: '200vh',
+								height: '200vh',
 								minHeight: 500,
 							}}>
 							<RouterProvider router={router} />

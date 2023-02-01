@@ -8,6 +8,9 @@ import {
 import { Navigate } from 'react-router-dom';
 
 export default {
+  title: 'CHABE - WPEx',
+  logo: 'https://gw.alipayobjects.com/zos/antfincdn/PmY%24TNNDBI/logo.svg',
+  pwa: true,
 	route: {
 		path: '/',
 		routes: [
@@ -19,27 +22,35 @@ export default {
 				component: './Welcome',
 			},
 			{
-				path: '/admin',
-				name: 'ADMIN',
+				path: '/data',
+				name: 'Données',
 				icon: <ChromeFilled />,
-				access: 'canAdmin',
-				component: './Admin',
+				// access: 'canAdmin',
+				component: <div>yo</div>,
 				routes: [
 					{
-						path: '/admin/sub-page1',
-						name: '一级页面',
+						path: '/data/missions',
+						name: 'Missions',
 						icon: 'https://gw.alipayobjects.com/zos/antfincdn/upvrAjAPQX/Logo_Tech%252520UI.svg',
 						component: './Welcome',
+            routes: [
+              {
+                path: '/data/missions/planning',
+                name: 'Planning',
+                icon: <CrownFilled />,
+                component: './Welcome',
+              }
+            ]
 					},
 					{
-						path: '/admin/sub-page2',
-						name: '二级页面',
+						path: '/data/folders',
+						name: 'Dossiers',
 						icon: <CrownFilled />,
 						component: './Welcome',
 					},
 					{
-						path: '/admin/sub-page3',
-						name: '三级页面',
+						path: '/data/clients',
+						name: 'Clients',
 						icon: <CrownFilled />,
 						component: './Welcome',
 					},
