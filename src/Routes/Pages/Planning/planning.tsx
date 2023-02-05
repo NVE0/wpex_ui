@@ -1,11 +1,12 @@
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 
-import { Button, DatePicker, Tag } from 'antd';
+import { Button, DatePicker, Popover, Steps, Tag } from 'antd';
 import React, { useEffect } from 'react';
 
 import { locale_pagination, locale_table } from '../../../Config/localization';
-import { TimeSelector_EndDate as TsEd, TimeSelector_StartDate as TsSd} from './time_selector';
+import { route_render } from './col_route';
+import { TimeSelector_EndDate as TsEd, TimeSelector_StartDate as TsSd } from './col_time';
 
 const { RangePicker } = DatePicker;
 
@@ -18,11 +19,7 @@ export type TableListItem = {
     id: number;
     start_date: string;
     end_date: string;
-    location_steps: {
-        location: {
-            name: string;
-        };
-    }[];
+    location_steps: string[];
     partnerId: number;
     driverId: number;
     carId: number;
@@ -83,18 +80,19 @@ export default () => {
             },
             children: [
                 {
-                    title: 'Date',
+                    title: 'D',
                     width: 20,
                     dataIndex: 'start_date',
                     render: (node, element, index) => {
                         const datetime = new Date(element.start_date);
                         // return the date in the format you want
                         return (
-                        <div tabIndex={1}>
-                            {datetime.toLocaleDateString('fr-FR', {
-                                day: 'numeric',
-                            month: 'short'})}
-                        </div>)
+                            <div tabIndex={1}>
+                                {datetime.toLocaleDateString('fr-FR', {
+                                    day: 'numeric',
+                                    month: 'short'
+                                })}
+                            </div>)
                     },
                     sorter: (a, b) => {
                         const datetime_a = new Date(a.start_date);
@@ -103,26 +101,30 @@ export default () => {
                     }
                 },
                 {
-                    title: 'H Debut',
+                    title: 'S',
                     width: 20,
                     dataIndex: 'start_date',
-                    render: (node, element, index) => { return(
-                        <TsSd
-                            onDone={() => setTableListDataSource([...tableListDataSource])}
-                            element={element} />
-                        )},
+                    render: (node, element, index) => {
+                        return (
+                            <TsSd
+                                onDone={() => setTableListDataSource([...tableListDataSource])}
+                                element={element} />
+                        )
+                    },
                     filterMode: 'tree',
                     filterSearch: true,
                 },
                 {
-                    title: 'H Debut',
+                    title: 'S',
                     width: 20,
                     dataIndex: 'start_date',
-                    render: (node, element, index) => { return(
-                        <TsEd
-                            onDone={() => setTableListDataSource([...tableListDataSource])}
-                            element={element} />
-                        )},
+                    render: (node, element, index) => {
+                        return (
+                            <TsEd
+                                onDone={() => setTableListDataSource([...tableListDataSource])}
+                                element={element} />
+                        )
+                    },
                     filterMode: 'tree',
                 },
             ]
@@ -133,24 +135,7 @@ export default () => {
             width: 120,
             dataIndex: 'location_steps',
             align: 'center',
-            render: (node, element, index) => {
-
-                if (element.location_steps.length == 0) {
-                    return <Tag color="red">Pas de route</Tag>
-                }
-
-                return (
-                    <div>
-                        {element.location_steps.map((step, index) => {
-                            return (
-                                <div key={index}>
-                                    <Tag color="blue">{step.location.name}</Tag>
-                                </div>
-                            );
-                        })}
-                    </div>
-                )
-            },
+            render: route_render
         },
         {
             title: 'Created At',
@@ -208,7 +193,7 @@ export default () => {
     const [loading, setLoading] = React.useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/missions")
+        fetch("http://localhost:3000/api/missions/all")
             .then((response) => response.json())
             .then((data) => { setTableListDataSource(data) })
             .then(() => setLoading(false))
@@ -220,6 +205,8 @@ export default () => {
 
             dataSource={tableListDataSource}
             loading={loading}
+
+
 
             onChange={(_, _filter, _sorter) => {
                 console.log('onChange', _);
@@ -239,6 +226,7 @@ export default () => {
                 },
             }}
             dateFormatter="string"
+            // sticky={true}
             // headerTitle="HeaderTitle"
             size='large'
             options={{

@@ -1,6 +1,5 @@
 import { TimePicker } from 'antd';
-import dayjs, {Dayjs} from 'dayjs';
-import { useState } from 'react';
+import dayjs from 'dayjs';
 import { TableListItem } from './planning';
 
 export function TimeSelector_StartDate(props: { onDone: () => void, element: TableListItem }) {
@@ -17,6 +16,7 @@ export function TimeSelector_StartDate(props: { onDone: () => void, element: Tab
                 props.element.start_date = value?.toDate().toISOString();
                 props.onDone();
             }}
+            suffixIcon={null}
             tabIndex={2}
 
         />
@@ -38,6 +38,7 @@ export function TimeSelector_EndDate(props: { onDone: () => void, element: Table
                 props.element.end_date = value?.toDate().toISOString();
                 props.onDone();
             }}
+            suffixIcon={null}
             tabIndex={2}
 
         />
