@@ -39,6 +39,6 @@ routes.push({
 	element: <Navigate to="/welcome" />,
 });
 
-console.log(routes);
+// console.log(routes);
 
 export default routes;

@@ -1,13 +1,11 @@
-import { DownOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 
-import { Button, DatePicker, Tabs, Tag } from 'antd';
-import TabPane from 'antd/es/tabs/TabPane';
-import { Dayjs } from 'dayjs';
-import React from 'react';
+import { Button, DatePicker, Tag } from 'antd';
+import React, { useEffect } from 'react';
 
 import { locale_pagination, locale_table } from '../../../Config/localization';
+import { TimeSelector_EndDate as TsEd, TimeSelector_StartDate as TsSd} from './time_selector';
 
 const { RangePicker } = DatePicker;
 
@@ -16,106 +14,143 @@ export type Status = {
     text: string;
 };
 
-const statusMap = {
-    0: {
-        color: 'blue',
-        text: 'Bleu',
-    },
-    1: {
-        color: 'green',
-        text: 'Vert',
-    },
-    2: {
-        color: 'volcano',
-        text: 'Volcan',
-    },
-    3: {
-        color: 'red',
-        text: 'Rouge',
-    },
-    4: {
-        color: '',
-        text: 'Beuh',
-    },
-};
-
 export type TableListItem = {
-    key: number;
-    name: string;
-    containers: number;
-    creator: string;
-    status: Status;
-    createdAt: string;
+    id: number;
+    start_date: string;
+    end_date: string;
+    location_steps: {
+        location: {
+            name: string;
+        };
+    }[];
+    partnerId: number;
+    driverId: number;
+    carId: number;
+    folderId: number;
+    operatorId: number;
 };
 const tableListDataSource: TableListItem[] = [];
 
-
-for (let i = 0; i < 1000; i += 1) {
-    const creators = ['A', 'B', 'C', 'D', 'E'];
-    tableListDataSource.push({
-        key: i,
-        name: 'AppName',
-        containers: Math.floor(Math.random() * 20),
-        creator: creators[Math.floor(Math.random() * creators.length)],
-        // @ts-ignore
-        status: statusMap[Math.floor(Math.random() * 10) % 5],
-        createdAt: '2023-02-01 23:12:00',
-    });
-}
-
-
-const expandedRowRender = () => {
-    const data = [];
-    for (let i = 0; i < 3; i += 1) {
-        data.push({
-            key: i,
-            date: '2023-02-01 23:12:00',
-            name: 'This is production name',
-            upgradeNum: 'Upgraded: 56',
-        });
-    }
-    return (
-        <div>
-            ok
-        </div>
-    );
-};
-
 export default () => {
 
+    const [tableListDataSource, setTableListDataSource] = React.useState<TableListItem[]>([]);
 
-    const [searchText, setSearchText] = React.useState('');
-    const [searchedColumn, setSearchedColumn] = React.useState('');
+    const expandedRowRender = () => {
+        const data = [];
+        for (let i = 0; i < 3; i += 1) {
+            data.push({
+                key: i,
+                date: '2023-02-01 23:12:00',
+                name: 'This is production name',
+                upgradeNum: 'Upgraded: 56',
+            });
+        }
+        return (
+            <div>
+                ok
+            </div>
+        );
+    };
 
     const columns: ProColumns<TableListItem>[] = [
         {
-            title: 'Name',
-            width: 120,
-            dataIndex: 'name',
-            render: (node, element, index) => <a>{element.name} !</a>,
+            title: 'Date and time',
+            sorter: true,
+            filters: true,
+            filterDropdown: ({
+                setSelectedKeys,
+                selectedKeys,
+                confirm,
+                clearFilters,
+            }) => {
+                return (
+                    <div style={{ margin: 10, padding: 10 }}>
+                        Date : <DatePicker style={{ width: '100%' }} onChange={(x, dateString) => {
+                            const from_midnight = new Date(dateString + 'T00:00:00');
+                            const to_midnight = new Date(dateString + 'T23:59:59');
+                            setSelectedKeys([from_midnight.getTime(), to_midnight.getTime()]);
+                            confirm();
+                        }} picker="date" />
+                        <hr />
+                        Range : <RangePicker style={{ width: '100%' }} showTime />
+                    </div>
+                );
+            },
+            onFilter: (value, record) => {
+                console.log('value', value);
+                console.log('record', record);
+                return true;
+            },
             children: [
                 {
-                    title: 'A',
-                    width: 60,
-                    dataIndex: 'A',
-                    render: (node, element, index) => <a>{element.name} !</a>,
-                    align: 'center',
+                    title: 'Date',
+                    width: 20,
+                    dataIndex: 'start_date',
+                    render: (node, element, index) => {
+                        const datetime = new Date(element.start_date);
+                        // return the date in the format you want
+                        return (
+                        <div tabIndex={1}>
+                            {datetime.toLocaleDateString('fr-FR', {
+                                day: 'numeric',
+                            month: 'short'})}
+                        </div>)
+                    },
+                    sorter: (a, b) => {
+                        const datetime_a = new Date(a.start_date);
+                        const datetime_b = new Date(b.start_date);
+                        return datetime_a.getTime() - datetime_b.getTime();
+                    }
                 },
                 {
-                    title: 'B',
-                    width: 60,
-                    dataIndex: 'B',
-                    render: (node, element, index) => "ok",
-                    align: 'center',
-                }
+                    title: 'H Debut',
+                    width: 20,
+                    dataIndex: 'start_date',
+                    render: (node, element, index) => { return(
+                        <TsSd
+                            onDone={() => setTableListDataSource([...tableListDataSource])}
+                            element={element} />
+                        )},
+                    filterMode: 'tree',
+                    filterSearch: true,
+                },
+                {
+                    title: 'H Debut',
+                    width: 20,
+                    dataIndex: 'start_date',
+                    render: (node, element, index) => { return(
+                        <TsEd
+                            onDone={() => setTableListDataSource([...tableListDataSource])}
+                            element={element} />
+                        )},
+                    filterMode: 'tree',
+                },
             ]
         },
+
         {
-            title: 'Status',
+            title: 'Route',
             width: 120,
-            dataIndex: 'status',
-            render: (_, record) => <Tag color={record.status.color}>{record.status.text}</Tag>,
-            filterMode: 'tree',
+            dataIndex: 'location_steps',
+            align: 'center',
+            render: (node, element, index) => {
+
+                if (element.location_steps.length == 0) {
+                    return <Tag color="red">Pas de route</Tag>
+                }
+
+                return (
+                    <div>
+                        {element.location_steps.map((step, index) => {
+                            return (
+                                <div key={index}>
+                                    <Tag color="blue">{step.location.name}</Tag>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )
+            },
         },
         {
             title: 'Created At',
@@ -129,14 +164,16 @@ export default () => {
             filterSearch: true,
             filters: true,
             onFilter(value, record) {
-                return record.createdAt.toString().includes(value as string);
+                return record.start_date.toString().includes(value as string);
             },
             filterDropdown(props) {
                 return (
                     <div style={{ margin: 10, padding: 10 }}>
-                        Date : <DatePicker style={{ width: '100%' }} onChange={(x,dateString) => {
-                            // When the user picks a date, change the filter value
-                            
+                        Date : <DatePicker open={true} style={{ width: '100%' }} onChange={(x, dateString) => {
+                            const from_midnight = new Date(dateString + 'T00:00:00');
+                            const to_midnight = new Date(dateString + 'T23:59:59');
+                            props.setSelectedKeys([from_midnight.getTime(), to_midnight.getTime()]);
+                            props.confirm();
                         }} picker="date" />
                         <hr />
                         Range : <RangePicker style={{ width: '100%' }} showTime />
@@ -149,8 +186,8 @@ export default () => {
             width: 120,
             dataIndex: 'containers',
             align: 'right',
-            sorter: (a, b) => a.containers - b.containers,
-            
+            //sorter: (a, b) => a.containers - b.containers,
+
         },
 
         {
@@ -168,26 +205,41 @@ export default () => {
         },
     ];
 
+    const [loading, setLoading] = React.useState(true);
+
+    useEffect(() => {
+        fetch("http://localhost:3000/api/missions")
+            .then((response) => response.json())
+            .then((data) => { setTableListDataSource(data) })
+            .then(() => setLoading(false))
+    }, [])
+
     return (
         <ProTable<TableListItem>
             columns={columns}
-            request={(params, sorter, filter) => {
-                // 表单搜索项会从 params 传入，传递给后端接口。
-                console.log({ params, sorter, filter });
-                return Promise.resolve({
-                    data: tableListDataSource,
-                    success: true,
-                });
+
+            dataSource={tableListDataSource}
+            loading={loading}
+
+            onChange={(_, _filter, _sorter) => {
+                console.log('onChange', _);
+                console.log('_filter', _filter);
+                console.log('_sorter', _sorter);
             }}
-            rowKey="key"
+
+            rowKey="id"
             pagination={{
                 showQuickJumper: true,
                 locale: locale_pagination
             }}
-            expandable={{ expandedRowRender }}
-            search={false}
+            expandable={{
+                expandedRowRender,
+                onExpand: (expanded, record) => {
+                    // console.log(expanded, record);
+                },
+            }}
             dateFormatter="string"
-            headerTitle="HeaderTitle"
+            // headerTitle="HeaderTitle"
             size='large'
             options={{
                 fullScreen: true,
@@ -196,14 +248,18 @@ export default () => {
             }}
             locale={locale_table}
             toolBarRender={() => [
-                <Button key="show">查看日志</Button>,
-                <Button key="out">
-                    导出数据
-                    <DownOutlined />
-                </Button>,
-                <Button key="primary" type="primary">
-                    创建应用
-                </Button>,
+                <Button key="show" onClick={() => {
+                    // update first element of tableListDataSource to test the update
+                    tableListDataSource[0].start_date = new Date().toString();
+                    setTableListDataSource([...tableListDataSource]);
+                }}>SHOW</Button>,
+                // <Button key="out">
+                //     OUT
+                //     <DownOutlined />
+                // </Button>,
+                // <Button key="primary" type="primary">
+                //     PRIM
+                // </Button>,
             ]}
         />
     );

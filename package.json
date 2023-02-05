@@ -13,6 +13,7 @@
 		"@types/react": "^18.0.27",
 		"@types/react-dom": "^18.0.10",
 		"antd": "^5.1.7",
+		"moment": "^2.29.4",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.8.0",
@@ -33,7 +34,7 @@
 		"workbox-streams": "^6.5.4"
 	},
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "set PORT=3006 && react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
