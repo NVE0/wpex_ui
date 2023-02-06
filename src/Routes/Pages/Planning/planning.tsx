@@ -6,12 +6,16 @@ import React, { useEffect } from 'react';
 
 import { locale_pagination, locale_table } from '../../../Config/localization';
 import { partner_render } from './col_partner';
+import { passenger_render } from './col_passenger';
 import { route_render } from './col_route';
 import {
 	DateSelectorX,
 	TimeSelector_EndDate as TsEd,
 	TimeSelector_StartDate as TsSd,
 } from './col_time';
+import { type_render } from './col_type';
+
+import "./style.css"
 
 const { RangePicker } = DatePicker;
 
@@ -22,13 +26,21 @@ export type Status = {
 
 export type TableListItem = {
 	id: number;
+	type: string;
 	start_date: string;
 	end_date: string;
 	location_steps: string[];
 	partnerId: number;
 	partner: {
 		name: string;
+	};
+	client: {
+		id: number;
+		name: string;
 	}
+	passenger?: {
+		name: string;
+	}[];
 	driverId: number;
 	carId: number;
 	folderId: number;
@@ -56,9 +68,17 @@ export default () => {
 
 	const columns: ProColumns<TableListItem>[] = [
 		{
-			title: 'Date and time',
+			title: 'T',
+			dataIndex: 'type',
+			align: 'center',
+			width: 1,
+			render: type_render,
+		},
+		{
+			title: 'Date et Heure',
 			filters: true,
 			width: 250,
+			align: 'center',
 			filterDropdown: ({
 				setSelectedKeys,
 				selectedKeys,
@@ -131,10 +151,10 @@ export default () => {
 			},
 		},
 		{
-			title: 'Partner',
+			title: 'Client / Passager',
+			dataIndex: 'passenger',
 			align: 'center',
-			dataIndex: 'partnerId',
-			render: partner_render
+			render: passenger_render,
 		},
 		{
 			title: 'Route',
@@ -142,7 +162,13 @@ export default () => {
 			align: 'center',
 			render: route_render,
 		},
-
+		{
+			title: 'Conducteur',
+			align: 'center',
+			dataIndex: 'partnerId',
+			width: 120,
+			render: partner_render
+		},
 		{
 			title: 'Creator',
 			width: 120,
@@ -166,13 +192,19 @@ export default () => {
 		//     .then((data) => { setTableListDataSource(data) })
 		//     .then(() => setLoading(false))
 
-		// Mock data
+		// Mock data ==================================================================================== MOCK DATA
 		const data: TableListItem[] = [];
+		function addDays(date: Date, days: number) {
+			var result = new Date(date);
+			result.setDate(result.getDate() + days);
+			return result;
+		  }
 		for (let i = 0; i < 46; i++) {
 			data.push({
 				id: i,
+				type: 'TA',
 				carId: i,
-				start_date: new Date().toString(),
+				start_date: addDays(new Date(), i).toString(),
 				end_date: new Date().toString(),
 				driverId: i,
 				folderId: i,
@@ -181,7 +213,17 @@ export default () => {
 				partnerId: i,
 				partner: {
 					name: 'Partner ' + i,
-				}
+				},
+				passenger: [
+					{
+						name: 'Passenger ' + i,
+					},
+				],
+				client: {
+					id: i,
+					name: 'Client ' + i,
+				},
+
 			});
 		}
 		setTableListDataSource(data);
@@ -190,6 +232,12 @@ export default () => {
 
 	return (
 		<ProTable<TableListItem>
+			rowClassName={(_, index) => {
+				if (index % 2 === 0) {
+					return 'table-row-light';
+				}
+				return 'table-row-dark';
+			}}
 			columns={columns}
 			dataSource={tableListDataSource}
 			loading={loading}
