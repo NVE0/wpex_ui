@@ -25,6 +25,7 @@ import locale from 'antd/locale/fr_FR';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import _routes from './Routes/_routes';
+import path from 'path';
 const router = createBrowserRouter(_routes);
 
 const Item: React.FC<{ children: React.ReactNode }> = props => {
@@ -265,6 +266,36 @@ export default () => {
 		setPathnamex(location.location.pathname);
 	});
 
+	type Route = {
+		path?: string; // Full path
+		name?: string; // Name to display
+		icon?: string; // Icon to display
+		component?: React.ComponentType<any>; // Component to display
+		options?: {
+			hidePageHeader: boolean;
+		},
+		routes?: Route[];
+	}
+
+	//@ts-ignore
+	const element_from_path = (path, base) => {
+		//@ts-ignore
+		const route = base.routes?.find(route => route.path === path);
+		console.log({route})
+		if (route) {
+			return route;
+		}
+		for (const route of base.routes ?? []) {
+			if (route.routes) {
+				const result : Route | null = element_from_path(path, route);
+				if (result) {
+					return result;
+				}
+			}
+		}
+		return null;
+	}
+
 	const [num, setNum] = useState(40);
 	return (
 		<div
@@ -313,7 +344,7 @@ export default () => {
 							if (props.isMobile) return [];
 							return [
 								props.layout !== 'side' &&
-									document.body.clientWidth > 1400 ? (
+								document.body.clientWidth > 1400 ? (
 									<SearchInput />
 								) : undefined,
 								<InfoCircleFilled key="InfoCircleFilled" />,
@@ -339,6 +370,13 @@ export default () => {
 								</>
 							);
 						}}
+						pageTitleRender={(() => { // If the route has options.hidePageHeader set to true, then hide the page header
+							if(element_from_path(pathname, defaultProps.route as Route)?.options?.hidePageHeader) {
+								return false;
+							}
+							return undefined; // show the header 
+						})()
+						}
 						menuFooterRender={props => {
 							if (props?.collapsed) return undefined;
 							return (
@@ -367,34 +405,33 @@ export default () => {
 								paddingInlinePageContainerContent: num,
 							}}
 							extra={[
-								<Button key="3">操作</Button>,
-								<Button key="2">操作</Button>,
-								<Button
-									key="1"
-									type="primary"
-									onClick={() => {
-										setNum(num > 0 ? 0 : 40);
-									}}>
-									主操作
-								</Button>,
+								// <Button key="3">操作</Button>,
+								// <Button key="2">操作</Button>,
+								// <Button
+								// 	key="1"
+								// 	type="primary"
+								// 	onClick={() => {
+								// 		setNum(num > 0 ? 0 : 40);
+								// 	}}>
+								// 	主操作
+								// </Button>,
 							]}
-							subTitle="简单的描述"
-
+							//subTitle="简单的描述"
 							footer={[
-								<Button key="3">重置</Button>,
-								<Button key="2" type="primary">
-									提交
-								</Button>,
+								// <Button key="3">重置</Button>,
+								// <Button key="2" type="primary">
+								// 	提交
+								// </Button>,
 							]}>
-							<ProCard
-								loading={false}
+							{/* <ProCard
+								loading={true}
 								style={{
 									height: '200vh',
 									minHeight: 500,
-								}}>
+								}}> */}
 								<RouterProvider router={router} />
-								<div />
-							</ProCard>
+								{/* <div />
+							</ProCard> */}
 						</PageContainer>
 
 						<SettingDrawer

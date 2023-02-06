@@ -26,6 +26,10 @@ export default {
 				name: 'Planning',
 				icon: <SmileFilled />,
 				component: <Planning />,
+
+				options: {
+					hidePageHeader: true,
+				}
 			},
 			{
 				path: '/data',

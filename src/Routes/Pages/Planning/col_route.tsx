@@ -26,7 +26,7 @@ export function route_render(node: React.ReactNode, element: TableListItem, inde
             title="Route"
             trigger={["click"]}
         >
-            <Button type="dashed">
+            <Button type="dashed" style={{width: "80%"}}>
                 {element.location_steps[0] + ' -> ' + element.location_steps[element.location_steps.length - 1]}
             </Button>
 
