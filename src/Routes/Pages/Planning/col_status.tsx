@@ -26,6 +26,7 @@ export function status_render(node: React.ReactNode, element: TableListItem, ind
                 backgroundColor: colors.find(e => e.key == element.status)?.color,
                 position: "absolute", width: 15, top: 0, bottom: 0, right: 0,
                 color: "white",
+                opacity: 0.5,
                 }}>
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
                     {element.status}

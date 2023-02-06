@@ -17,7 +17,7 @@ export default {
 			// Routes at the top of the page
 			{
 				path: '/welcome',
-				name: 'HOME',
+				name: 'Accueil',
 				icon: <SmileFilled />,
 				component: './Welcome',
 			},
@@ -73,7 +73,7 @@ export default {
 				],
 			},
 			{
-				name: '列表页',
+				name: 'Liste',
 				icon: <TabletFilled />,
 				path: '/list',
 				component: './ListTableList',
@@ -119,7 +119,7 @@ export default {
 			},
 			{
 				path: 'https://ant.design',
-				name: 'Ant Design 官网外链',
+				name: 'Ant Design',
 				icon: '', //<ChromeFilled />,
 			},
 		],

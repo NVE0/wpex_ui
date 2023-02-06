@@ -189,6 +189,7 @@ export default () => {
 			title: 'Route',
 			dataIndex: 'location_steps',
 			align: 'center',
+			width: 400,
 			render: route_render,
 		},
 		{
