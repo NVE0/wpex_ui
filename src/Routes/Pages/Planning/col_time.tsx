@@ -30,7 +30,8 @@ export function TimeSelector_StartDate(props: { onDone: () => void, element: Tab
     return (
 
         <TimePicker
-            style={{width: 40, borderTop: "solid green 1px", borderBottom: "solid red 0px", padding: 0, textAlign: "center"}}
+            style={{width: 40, borderTop: "solid green 1px", borderBottom: "solid red 0px", padding: 0, textAlign: "center", paddingLeft:3}}
+            // style={{width: 40, border: "solid green 1px", padding: 0, textAlign: "center", paddingLeft:3}}
             onChange={(value) => console.warn(value?.toDate())}
             showSecond={false}
             value={props.element.start_date ? dayjs(props.element.start_date) : undefined}
@@ -54,7 +55,8 @@ export function TimeSelector_EndDate(props: { onDone: () => void, element: Table
     return (
 
         <TimePicker
-            style={{width: 40, borderTop:"solid red 1px", borderBottom: "solid red 0px", padding: 0, marginLeft: 5}}
+            style={{width: 40, borderTop:"solid red 1px", borderBottom: "solid red 0px", padding: 0, marginLeft: 5, paddingLeft:3}}
+            // style={{width: 40, border: "solid red 1px", padding: 0, textAlign: "center", paddingLeft:3, marginLeft: 5}}
             onChange={(value) => console.warn(value?.toDate())}
             showSecond={false}
             value={props.element.end_date ? dayjs(props.element.end_date) : undefined}

@@ -1,4 +1,4 @@
-import type { ProColumns } from '@ant-design/pro-components';
+import { ProColumns, useToken } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 
 import { Button, DatePicker, Popover, Steps, Tag } from 'antd';
@@ -8,6 +8,7 @@ import { locale_pagination, locale_table } from '../../../Config/localization';
 import { partner_render } from './col_partner';
 import { passenger_render } from './col_passenger';
 import { route_render } from './col_route';
+import { status_render } from './col_status';
 import {
 	DateSelectorX,
 	TimeSelector_EndDate as TsEd,
@@ -39,12 +40,39 @@ export type TableListItem = {
 		name: string;
 	}
 	passenger?: {
+        id: number;
 		name: string;
+
+        adults: number;
+        children: number;
+        babies: number;
+
+        passenger_data: {
+            phone: string;
+            email: string;
+            language: string;
+        }
+        luggage_data: {
+            luggage: number;
+            special_luggage: number;
+
+            handicap: boolean;
+
+            child_seat: number;
+            booster_seat: number;
+            baby_seat: number;
+        },
+        preferences: {
+            sms: boolean;
+            email: boolean;
+        }
 	}[];
 	driverId: number;
 	carId: number;
 	folderId: number;
 	operatorId: number;
+
+    status: string;
 };
 const tableListDataSource: TableListItem[] = [];
 
@@ -154,6 +182,7 @@ export default () => {
 			title: 'Client / Passager',
 			dataIndex: 'passenger',
 			align: 'center',
+            width: 200,
 			render: passenger_render,
 		},
 		{
@@ -169,18 +198,12 @@ export default () => {
 			width: 120,
 			render: partner_render
 		},
-		{
-			title: 'Creator',
-			width: 120,
-			dataIndex: 'creator',
-			valueEnum: {
-				all: { text: 'ALL' },
-				A: { text: 'A' },
-				B: { text: 'B' },
-				C: { text: 'C' },
-				D: { text: 'D' },
-				E: { text: 'E' },
-			},
+        {
+			title: 'S',
+			align: 'center',
+			dataIndex: 'status',
+			width: 65,
+			render: status_render
 		},
 	];
 
@@ -216,14 +239,39 @@ export default () => {
 				},
 				passenger: [
 					{
+                        id: i,
 						name: 'Passenger ' + i,
-					},
+
+                        adults: 1,
+                        children: 0,
+                        babies: 0,
+                        passenger_data: {
+                            email: 'aa@test.com',
+                            language: 'fr',
+                            phone: '0606060606',
+                        },
+
+                        luggage_data: {
+                            luggage: 1,
+                            special_luggage: 1,
+                            baby_seat: 1,
+                            booster_seat: 0,
+                            handicap: false,
+                            child_seat: 0,
+                        },
+
+                        preferences: {
+                            email: true,
+                            sms: true,
+                        }
+                    }
 				],
 				client: {
 					id: i,
-					name: 'Client ' + i,
+					name: 'PENINSULA ' + i,
 				},
 
+                status: ""+Math.floor(Math.random() * 10)
 			});
 		}
 		setTableListDataSource(data);
@@ -233,6 +281,10 @@ export default () => {
 	return (
 		<ProTable<TableListItem>
 			rowClassName={(_, index) => {
+
+                const is_dark_mode = document.body.classList.contains('ant-pro-dark');
+                console.log('is_dark_mode', is_dark_mode)
+
 				if (index % 2 === 0) {
 					return 'table-row-light';
 				}
@@ -261,15 +313,16 @@ export default () => {
 			dateFormatter="string"
 			sticky={{ offsetHeader: 55, offsetScroll: 32, getContainer: () => document.getElementById('root') || document.body }}
             
-			// headerTitle="HeaderTitle"
+			headerTitle="Liste des missions du jour"
+
             scroll={{ x: 'max-content'} }
             defaultSize='large'
 			showHeader={true}
 			size="large"
 			options={{
-				fullScreen: false,
+				fullScreen: true,
 				reload: false,
-				setting: false,
+				setting: true,
                 density: false,
                 search: false
 			}}
