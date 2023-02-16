@@ -76,7 +76,8 @@ export type TableListItem = {
 };
 const tableListDataSource: TableListItem[] = [];
 
-export default () => {
+//@ts-ignore
+export default Planning = () => {
 	const [tableListDataSource, setTableListDataSource] = React.useState<
 		TableListItem[]
 	>([]);
@@ -312,7 +313,7 @@ export default () => {
 				},
 			}}
 			dateFormatter="string"
-			sticky={{ offsetHeader: 55, offsetScroll: 32, getContainer: () => document.getElementById('root') || document.body }}
+			sticky={{ offsetHeader: 55, offsetScroll: 32, getContainer: () => document.getElementsByClassName('ant-pro-page-container-children-content')[0] as HTMLElement || document.body }}
             
 			headerTitle="Liste des missions du jour"
 

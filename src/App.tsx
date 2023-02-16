@@ -55,7 +55,7 @@ const Item: React.FC<{ children: React.ReactNode }> = props => {
 	);
 };
 
-const List: React.FC<{
+const ListOfLearningResources: React.FC<{
 	title: string;
 	style?: React.CSSProperties;
 }> = props => {
@@ -83,7 +83,7 @@ const List: React.FC<{
 					flexWrap: 'wrap',
 				}}>
 				{new Array(6).fill(1).map((_, index) => {
-					return <Item key={index}>具体的解决方案-{index}</Item>;
+					return <Item key={index}>TEST-{index}</Item>;
 				})}
 			</div>
 		</div>
@@ -116,9 +116,9 @@ const MenuCard = () => {
 				content={
 					<div style={{ display: 'flex', padding: '32px 40px' }}>
 						<div style={{ flex: 1 }}>
-							<List title="金融解决方案" />
-							<List
-								title="其他解决方案"
+							<ListOfLearningResources title="Self Learning" />
+							<ListOfLearningResources
+								title="Mes interlocuteurs"
 								style={{
 									marginBlockStart: 32,
 								}}
@@ -165,7 +165,7 @@ const MenuCard = () => {
 													color: ${token.colorText};
 													line-height: 22px;
 												`}>
-												Ant Design
+												Documentation Utilisateur
 											</div>
 											<div
 												className={css`
@@ -173,7 +173,7 @@ const MenuCard = () => {
 													color: ${token.colorTextSecondary};
 													line-height: 20px;
 												`}>
-												杭州市较知名的 UI 设计语言
+												Informations basiques et tutoriels
 											</div>
 										</div>
 									</div>
@@ -234,7 +234,7 @@ const SearchInput = () => {
 						}}
 					/>
 				}
-				placeholder="搜索方案"
+				placeholder="Rechercher..."
 				bordered={false}
 			/>
 			<PlusCircleFilled
@@ -281,13 +281,13 @@ export default () => {
 	const element_from_path = (path, base) => {
 		//@ts-ignore
 		const route = base.routes?.find(route => route.path === path);
-		console.log({route})
+		console.log({ route })
 		if (route) {
 			return route;
 		}
 		for (const route of base.routes ?? []) {
 			if (route.routes) {
-				const result : Route | null = element_from_path(path, route);
+				const result: Route | null = element_from_path(path, route);
 				if (result) {
 					return result;
 				}
@@ -344,7 +344,7 @@ export default () => {
 							if (props.isMobile) return [];
 							return [
 								props.layout !== 'side' &&
-								document.body.clientWidth > 1400 ? (
+									document.body.clientWidth > 1400 ? (
 									<SearchInput />
 								) : undefined,
 								<InfoCircleFilled key="InfoCircleFilled" />,
@@ -371,7 +371,7 @@ export default () => {
 							);
 						}}
 						pageTitleRender={(() => { // If the route has options.hidePageHeader set to true, then hide the page header
-							if(element_from_path(pathname, defaultProps.route as Route)?.options?.hidePageHeader) {
+							if (element_from_path(pathname, defaultProps.route as Route)?.options?.hidePageHeader) {
 								return false;
 							}
 							return undefined; // show the header 

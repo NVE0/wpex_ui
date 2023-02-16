@@ -5,7 +5,6 @@ import {
 	TabletFilled,
 } from '@ant-design/icons';
 import Planning from '../Routes/Pages/Planning/planning';
-import planning from '../Routes/Pages/Planning/planning';
 
 export default {
 	title: 'CHABE - WPEx',
@@ -118,8 +117,8 @@ export default {
 				],
 			},
 			{
-				path: 'https://ant.design',
-				name: 'Ant Design',
+				path: 'https://chabe.fr',
+				name: 'Chabe',
 				icon: '', //<ChromeFilled />,
 			},
 		],
