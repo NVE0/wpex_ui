@@ -5,6 +5,7 @@ import { Button, DatePicker, Popover, Steps, Tag } from 'antd';
 import React, { useEffect } from 'react';
 
 import { locale_pagination, locale_table } from '../../../Config/localization';
+import Faker_Create_User from '../../../utils/faker';
 import { partner_render } from './col_partner';
 import { passenger_render } from './col_passenger';
 import { route_render } from './col_route';
@@ -68,6 +69,10 @@ export type TableListItem = {
         }
 	}[];
 	driverId: number;
+	driver?: {
+		first_name: string;
+		last_name: string;
+	};
 	carId: number;
 	folderId: number;
 	operatorId: number;
@@ -77,7 +82,7 @@ export type TableListItem = {
 const tableListDataSource: TableListItem[] = [];
 
 //@ts-ignore
-export default Planning = () => {
+export default () => {
 	const [tableListDataSource, setTableListDataSource] = React.useState<
 		TableListItem[]
 	>([]);
@@ -190,14 +195,14 @@ export default Planning = () => {
 			title: 'Route',
 			dataIndex: 'location_steps',
 			align: 'center',
-			width: 400,
+			width: 350,
 			render: route_render,
 		},
 		{
 			title: 'Conducteur',
 			align: 'center',
 			dataIndex: 'partnerId',
-			width: 120,
+			width: 220,
 			render: partner_render
 		},
         {
@@ -225,6 +230,10 @@ export default Planning = () => {
 			return result;
 		  }
 		for (let i = 0; i < 46; i++) {
+
+			const faker_chauffeur = Faker_Create_User();
+			const faker_passenger = Faker_Create_User();
+
 			data.push({
 				id: i,
 				type: 'TA',
@@ -232,6 +241,7 @@ export default Planning = () => {
 				start_date: addDays(new Date(), i).toString(),
 				end_date: new Date().toString(),
 				driverId: i,
+				driver: ( (i%2==0) ? { first_name: faker_chauffeur.firstName, last_name: faker_chauffeur.lastName } : undefined ),
 				folderId: i,
 				location_steps: ['Paris', 'Lyon', 'Marseille'],
 				operatorId: i,
@@ -242,13 +252,13 @@ export default Planning = () => {
 				passenger: [
 					{
                         id: i,
-						name: 'Passenger ' + i,
+						name: faker_passenger.firstName + ' ' + faker_passenger.lastName,
 
                         adults: 1,
                         children: 0,
                         babies: 0,
                         passenger_data: {
-                            email: 'aa@test.com',
+                            email: faker_passenger.email,
                             language: 'fr',
                             phone: '0606060606',
                         },
@@ -269,12 +279,13 @@ export default Planning = () => {
                     }
 				],
 				client: {
-					id: i,
-					name: 'PENINSULA ' + i,
+					id: 1,
+					name: 'PENINSULA',
 				},
 
                 status: ""+Math.floor(Math.random() * 10)
 			});
+
 		}
 		setTableListDataSource(data);
 		setLoading(false);
@@ -285,7 +296,7 @@ export default Planning = () => {
 			rowClassName={(_, index) => {
 
                 const is_dark_mode = document.body.classList.contains('ant-pro-dark');
-                console.log('is_dark_mode', is_dark_mode)
+                //console.log('is_dark_mode', is_dark_mode)
 
 				if (index % 2 === 0) {
 					return 'table-row-light';
@@ -323,10 +334,10 @@ export default Planning = () => {
 			size="large"
 			options={{
 				fullScreen: true,
-				reload: false,
+				reload: true,
 				setting: true,
                 density: false,
-                search: false
+                search: true	
 			}}
 			locale={locale_table}
 			toolBarRender={() => [
@@ -335,6 +346,58 @@ export default Planning = () => {
 				//     tableListDataSource[0].start_date = new Date().toString();
 				//     setTableListDataSource([...tableListDataSource]);
 				// }}>SHOW</Button>,
+				<Button key="add" type="primary" onClick={() => {
+					// add new element to tableListDataSource to test the update
+					const new_element : TableListItem = {
+						id: tableListDataSource.length,
+						type: 'TA',
+						carId: tableListDataSource.length,
+						start_date: /* first of january */ new Date(new Date().getFullYear(), 0, 1).toString(),
+						end_date: new Date().toString(),
+						driverId: tableListDataSource.length,
+						driver: undefined,
+						folderId: tableListDataSource.length,
+						location_steps: ['Paris', 'Lyon', 'Marseille'],
+						operatorId: tableListDataSource.length,
+						partnerId: tableListDataSource.length,
+						partner: {
+							name: 'Partner ' + tableListDataSource.length,
+						},
+						passenger: [
+							{
+								id: 0,
+								name: 'Passenger ' + tableListDataSource.length,
+								adults: 1,
+								children: 0,
+								babies: 0,
+								passenger_data: {
+									email: '',
+									language: 'fr',
+									phone: '0606060606',
+								},
+								luggage_data: {
+									luggage: 1,
+									special_luggage: 1,
+									baby_seat: 1,
+									booster_seat: 0,
+									handicap: false,
+									child_seat: 0,
+								},
+								preferences: {
+									email: true,
+									sms: true,
+								}
+							}
+						],
+						client: {
+							id: 1,
+							name: 'PENINSULA',
+						},
+						status: '0'
+					};
+					setTableListDataSource([...tableListDataSource, new_element]);
+				}}>Ajouter</Button>,
+
 				// <Button key="out">
 				//     OUT
 				//     <DownOutlined />
