@@ -1,13 +1,13 @@
 import { GoldOutlined, ShoppingOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, Divider, Dropdown, MenuProps, Popconfirm, Popover, Tooltip, Typography } from 'antd';
 import ContextMenu from '../../../utils/ContextMenu';
-import { TableListItem } from './planning';
+import { PlanningData } from './planning';
 
 const { Title } = Typography;
 
 export function passenger_render(
 	node: React.ReactNode,
-	element: TableListItem,
+	element: PlanningData,
 	index: number
 ) {
 

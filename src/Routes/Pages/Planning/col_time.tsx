@@ -1,8 +1,8 @@
 import { DatePicker, TimePicker } from 'antd';
 import dayjs from 'dayjs';
-import { TableListItem } from './planning';
+import { PlanningData } from './planning';
 
-export function DateSelectorX(props: { onDone: () => void, element: TableListItem, index: number }) {
+export function DateSelectorX(props: { onDone: () => void, element: PlanningData, index: number }) {
 
     return (
 
@@ -25,7 +25,7 @@ export function DateSelectorX(props: { onDone: () => void, element: TableListIte
     )
 }
 
-export function TimeSelector_StartDate(props: { onDone: () => void, element: TableListItem, index: number }) {
+export function TimeSelector_StartDate(props: { onDone: () => void, element: PlanningData, index: number }) {
 
     return (
 
@@ -50,7 +50,7 @@ export function TimeSelector_StartDate(props: { onDone: () => void, element: Tab
     )
 }
 
-export function TimeSelector_EndDate(props: { onDone: () => void, element: TableListItem, index: number }) {
+export function TimeSelector_EndDate(props: { onDone: () => void, element: PlanningData, index: number }) {
 
     return (
 

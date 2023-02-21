@@ -26,7 +26,7 @@ export type Status = {
 	text: string;
 };
 
-export type TableListItem = {
+export type PlanningData = {
 	id: number;
 	type: string;
 	start_date: string;
@@ -79,12 +79,12 @@ export type TableListItem = {
 
     status: string;
 };
-const tableListDataSource: TableListItem[] = [];
+const tableListDataSource: PlanningData[] = [];
 
 //@ts-ignore
 export default () => {
 	const [tableListDataSource, setTableListDataSource] = React.useState<
-		TableListItem[]
+		PlanningData[]
 	>([]);
 
 	const expandedRowRender = () => {
@@ -100,7 +100,7 @@ export default () => {
 		return <div>ok</div>;
 	};
 
-	const columns: ProColumns<TableListItem>[] = [
+	const columns: ProColumns<PlanningData>[] = [
 		{
 			title: 'T',
 			dataIndex: 'type',
@@ -223,7 +223,7 @@ export default () => {
 		//     .then(() => setLoading(false))
 
 		// Mock data ==================================================================================== MOCK DATA
-		const data: TableListItem[] = [];
+		const data: PlanningData[] = [];
 		function addDays(date: Date, days: number) {
 			var result = new Date(date);
 			result.setDate(result.getDate() + days);
@@ -240,7 +240,7 @@ export default () => {
 				carId: i,
 				start_date: addDays(new Date(), i).toString(),
 				end_date: new Date().toString(),
-				driverId: i,
+				driverId: ( (i%2==0) ? i : 0 ),
 				driver: ( (i%2==0) ? { first_name: faker_chauffeur.firstName, last_name: faker_chauffeur.lastName } : undefined ),
 				folderId: i,
 				location_steps: ['Paris', 'Lyon', 'Marseille'],
@@ -292,7 +292,7 @@ export default () => {
 	}, []);
 
 	return (
-		<ProTable<TableListItem>
+		<ProTable<PlanningData>
 			rowClassName={(_, index) => {
 
                 const is_dark_mode = document.body.classList.contains('ant-pro-dark');
@@ -348,7 +348,7 @@ export default () => {
 				// }}>SHOW</Button>,
 				<Button key="add" type="primary" onClick={() => {
 					// add new element to tableListDataSource to test the update
-					const new_element : TableListItem = {
+					const new_element : PlanningData = {
 						id: tableListDataSource.length,
 						type: 'TA',
 						carId: tableListDataSource.length,

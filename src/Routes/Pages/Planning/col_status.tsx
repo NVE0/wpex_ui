@@ -1,6 +1,6 @@
 import { InfoCircleTwoTone } from "@ant-design/icons";
 import { Button, Divider, Popover } from "antd";
-import { TableListItem } from "./planning";
+import { PlanningData } from "./planning";
 
 const colors = [
     { key: '1', color: 'red' },
@@ -15,7 +15,7 @@ const colors = [
     { key: '10', color: 'black' },
 ]
 
-export function status_render(node: React.ReactNode, element: TableListItem, index: number) {
+export function status_render(node: React.ReactNode, element: PlanningData, index: number) {
     return(
         <>
             {/* Center this div */}

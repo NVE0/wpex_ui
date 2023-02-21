@@ -1,7 +1,7 @@
 import { Button, Divider, Popover } from "antd";
-import { TableListItem } from "./planning";
+import { PlanningData } from "./planning";
 
-export function type_render(node: React.ReactNode, element: TableListItem, index: number) {
+export function type_render(node: React.ReactNode, element: PlanningData, index: number) {
     return(
         <div style={{
             backgroundColor:"rgba(255,0,0,0.5)",

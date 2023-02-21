@@ -1,8 +1,8 @@
 import { Button, Col, Popover, Row, Steps, Tabs, Tag, Typography } from "antd"
 import TabPane from "antd/es/tabs/TabPane"
-import { TableListItem } from "./planning"
+import { PlanningData } from "./planning"
 
-const Popup = (props: { element: TableListItem }) => {
+const Popup = (props: { element: PlanningData }) => {
 
     return (
 
@@ -51,7 +51,7 @@ const Popup = (props: { element: TableListItem }) => {
 
 }
 
-const ReactElement = (props: { element: TableListItem }) => {
+const ReactElement = (props: { element: PlanningData }) => {
     return (
 
         <Popover
@@ -74,7 +74,7 @@ const ReactElement = (props: { element: TableListItem }) => {
     )
 }
 
-export function route_render(node: React.ReactNode, element: TableListItem, index: number) {
+export function route_render(node: React.ReactNode, element: PlanningData, index: number) {
 
     if (element.location_steps.length == 0) {
         return <Tag color="red">Pas de route</Tag>
