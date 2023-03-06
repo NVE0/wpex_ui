@@ -1,7 +1,8 @@
-import { ProColumns, useToken } from '@ant-design/pro-components';
+import { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 
 import { Button, DatePicker, Popover, Steps, Tag } from 'antd';
+import { truncate } from 'fs';
 import React, { useEffect } from 'react';
 
 import { locale_pagination, locale_table } from '../../../Config/localization';
@@ -29,8 +30,8 @@ export type Status = {
 export type PlanningData = {
 	id: number;
 	type: string;
-	start_date: string;
-	end_date: string;
+	start_date?: Date;
+	end_date?: Date;
 	location_steps: string[];
 	partnerId: number;
 	partner: {
@@ -113,11 +114,13 @@ export default () => {
 			filters: true,
 			width: 250,
 			align: 'center',
+			filterSearch:true,
 			filterDropdown: ({
 				setSelectedKeys,
 				selectedKeys,
 				confirm,
 				clearFilters,
+				close,
 			}) => {
 				return (
 					<div style={{ margin: 10, padding: 10 }}>
@@ -132,6 +135,7 @@ export default () => {
 									dateString + 'T23:59:59'
 								);
 								setSelectedKeys([
+									new Date(dateString + "T12:00:00").getTime(),
 									from_midnight.getTime(),
 									to_midnight.getTime(),
 								]);
@@ -141,22 +145,40 @@ export default () => {
 						/>
 						<hr />
 						Range :{' '}
-						<RangePicker style={{ width: '100%' }} showTime />
+						<RangePicker
+							style={{ width: '100%' }}
+							showTime
+
+							onChange={(x, dateString) => {
+
+								const from_date = new Date(dateString[0]);
+								const to_date = new Date(dateString[1]);
+
+								setSelectedKeys([
+									from_date.getTime(),
+									to_date.getTime(),
+								]);
+
+								confirm();
+
+							}}
+							
+						/>
 					</div>
 				);
 			},
-			onFilter: (value, record) => {
-				console.log('value', value);
-				console.log('record', record);
+			onFilter: (value, record : PlanningData) => {
+				console.log({v: new Date(value as string)});
 				return true;
 			},
 			sorter: (a, b) => {
-				const datetime_a = new Date(a.start_date);
-				const datetime_b = new Date(b.start_date);
-				return datetime_a.getTime() - datetime_b.getTime();
+				if(a.start_date && b.start_date)
+					return b.start_date.getTime() - a.start_date.getTime();
+				else
+					return 0;
 			},
 			render: (node, element, index) => {
-				const datetime = new Date(element.start_date);
+				const datetime = element.start_date;
 				return (
 					<>
 						<DateSelectorX
@@ -238,8 +260,8 @@ export default () => {
 				id: i,
 				type: 'TA',
 				carId: i,
-				start_date: addDays(new Date(), i).toString(),
-				end_date: new Date().toString(),
+				start_date: addDays(new Date(), i),
+				end_date: new Date(),
 				driverId: ( (i%2==0) ? i : 0 ),
 				driver: ( (i%2==0) ? { first_name: faker_chauffeur.firstName, last_name: faker_chauffeur.lastName } : undefined ),
 				folderId: i,
@@ -352,8 +374,8 @@ export default () => {
 						id: tableListDataSource.length,
 						type: 'TA',
 						carId: tableListDataSource.length,
-						start_date: /* first of january */ new Date(new Date().getFullYear(), 0, 1).toString(),
-						end_date: new Date().toString(),
+						start_date: /* first of january */ new Date(new Date().getFullYear(), 0, 1),
+						end_date: new Date(),
 						driverId: tableListDataSource.length,
 						driver: undefined,
 						folderId: tableListDataSource.length,

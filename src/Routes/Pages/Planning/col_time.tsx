@@ -12,7 +12,7 @@ export function DateSelectorX(props: { onDone: () => void, element: PlanningData
             showTime={false}
             format={'DD/MM/YYYY'}
             onChange={(value) => {
-                props.element.start_date = value?.toDate().toISOString() || "";
+                props.element.start_date = value?.toDate() ?? undefined;
                 props.onDone();
             }}
             style={{width: 100, padding: 0, textAlign: "center"}}
@@ -38,7 +38,7 @@ export function TimeSelector_StartDate(props: { onDone: () => void, element: Pla
             bordered={true}
             format={'HH:mm'}
             onSelect={(value) => {
-                props.element.start_date = value?.toDate().toISOString();
+                props.element.start_date = value?.toDate();
                 props.onDone();
             }}
             suffixIcon={null}
@@ -63,7 +63,7 @@ export function TimeSelector_EndDate(props: { onDone: () => void, element: Plann
             bordered={true}
             format={'HH:mm'}
             onSelect={(value) => {
-                props.element.end_date = value?.toDate().toISOString();
+                props.element.end_date = value?.toDate();
                 props.onDone();
             }}
             suffixIcon={null}

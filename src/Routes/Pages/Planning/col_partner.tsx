@@ -1,4 +1,4 @@
-import { Button, Divider, Popover, Typography } from "antd";
+import { Button, Typography } from "antd";
 import { PlanningData } from "./planning";
 
 // This is the column definition for the partner column
