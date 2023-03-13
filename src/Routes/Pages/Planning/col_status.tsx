@@ -1,5 +1,5 @@
-import { InfoCircleTwoTone } from "@ant-design/icons";
-import { Button, Divider, Popover } from "antd";
+import { AimOutlined, InfoCircleTwoTone } from "@ant-design/icons";
+import { Button, Divider, Popover, Tooltip, Typography } from "antd";
 import { PlanningData } from "./planning";
 
 const colors = [
@@ -21,15 +21,18 @@ export function status_render(node: React.ReactNode, element: PlanningData, inde
             {/* Center this div */}
             <div style={{ display: 'flex', justifyContent: "start", alignItems:"center", height:"100%" }}>
                 <InfoCircleTwoTone style={{fontSize: 20}} />
+                {(Math.random() * 10) > 5 && <Tooltip title="Données GPS non fiables"><AimOutlined style={{marginLeft: 10, color: "red"}} /></Tooltip>}{/* TODO : detect if GPS is working */}
             </div>
             <div style={{
                 backgroundColor: colors.find(e => e.key == element.status)?.color,
                 position: "absolute", width: 15, top: 0, bottom: 0, right: 0,
                 color: "white",
-                opacity: 0.5,
+                opacity: 0.7,
                 }}>
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
-                    {element.status}
+                    <Typography.Text style={{color: "white"}}>
+                        {element.status}
+                    </Typography.Text>
                 </div>
             </div>
         </>

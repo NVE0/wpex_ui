@@ -1,4 +1,4 @@
-import { Button, Typography } from "antd";
+import { Button, Dropdown, MenuProps, Typography } from "antd";
 import { PlanningData } from "./planning";
 
 // This is the column definition for the partner column
@@ -21,11 +21,13 @@ function Chauffeur(props: { element: PlanningData, index: number }) {
 
 	if (props.element.driverId != 0) {
 		return (
-			<Typography style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>
-				{props.element.driver?.first_name}
-				{" "}
-				{props.element.driver?.last_name.toUpperCase()}
-			</Typography>
+			<b>				
+				<Typography style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>
+					{props.element.driver?.first_name}
+					{" "}
+					{props.element.driver?.last_name.toUpperCase()}
+				</Typography>
+			</b>
 		)
 	}
 
@@ -51,6 +53,47 @@ function Partner(props: { element: PlanningData, index: number }) {
 	let partner_name = props.element.partner.name;
 	if (props.element.partnerId == 1) partner_name = "CHABE"; // DEBUG
 
+	const items: MenuProps['items'] = [
+		{
+			key: '0',
+			label: (
+				<>
+					<Title level={5} style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>
+						{partner_name.toUpperCase()}
+					</Title>
+					<div style={{ display: "flex", justifyContent: "space-between" }}>
+						<a href="tel:0000">
+							<Typography style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>
+								06 00 00 00 00
+							</Typography>
+						</a>
+						<a href="mailto:aa@test.fr">
+							<Typography style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>
+								test@{props.element.partner.name}.com
+							</Typography>
+						</a>
+					</div>
+				</>
+			),
+		},
+		{
+			key: '1',
+			label: (
+				<a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+					Filtrer : Afficher uniquement les missions XX
+				</a>
+			),
+		},
+		{
+			key: '2',
+			label: (
+				<a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+					Ouvrir les informations de ce partenaire
+				</a>
+			),
+		},
+	];
+
 
 	let driver;
 	if (props.element.driverId != PARTNER_UNSET_ID) {
@@ -62,12 +105,17 @@ function Partner(props: { element: PlanningData, index: number }) {
 		if (props.element.partnerId == PARTNER_INTERNAL_ID)
 			driver = <Chauffeur_Missing_Internal element={props.element} index={props.index} />
 		else
-			driver = <>En attente chauffeur</>
+			driver = <i style={{color: "orange"}}>En attente chauffeur</i>
 	}
 
 	return (
 		<>
-			<Typography style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>{partner_name}</Typography>
+			<Dropdown
+				trigger={['contextMenu']}
+				menu={{ items }}
+			>
+				<Typography style={{ textAlign: "center", color: "rgba(0 0 0 0.8)" }}>{partner_name}</Typography>
+			</Dropdown>
 			{driver}
 		</>
 	)
